@@ -26,27 +26,28 @@ namespace Cis.WebApi.Controllers
         }
         [HttpGet]
         [Route("/[controller]/{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(repository.GetEntity(id));
+            var res = await repository.GetEntity(id);
+            return Ok(res);
         }
         [HttpDelete]
         [Route("/[controller]/{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            repository.RemoveEntity(id);
+            await repository.RemoveEntity(id);
             return Ok();
         }
         [HttpPost]
-        public IActionResult Post([FromBody]Ingredient ingredient)
+        public async Task<IActionResult> Post([FromBody]Ingredient ingredient)
         {
-            repository.AddEntity(ingredient);
+            await repository.AddEntity(ingredient);
             return Ok();
         }
         [HttpPut]
-        public IActionResult Put([FromBody] Ingredient ingredient)
+        public async Task<IActionResult> Put([FromBody] Ingredient ingredient)
         {
-            repository.UpdateEntity(ingredient);
+            await repository.UpdateEntity(ingredient);
             return Ok();
         }
     }
