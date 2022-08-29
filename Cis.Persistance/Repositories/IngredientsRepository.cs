@@ -16,46 +16,50 @@ namespace Cis.Persistance.Repositories
             _cisDbcontext = cisDbContext;
         }
 
-        public void AddEntity(Ingredient ingredient)
+        public async Task AddEntity(Ingredient ingredient)
         {
-            var res = _cisDbcontext.Add(ingredient).State;
-            _cisDbcontext.SaveChanges();
+            await _cisDbcontext.AddAsync(ingredient);
+            await SaveChangesAsync();
         }
 
-        public List<Ingredient> GetAllEntities()
+        public async Task<List<Ingredient>> GetAllEntities()
         {
-            return _cisDbcontext.Ingredients.ToList();
+            return await _cisDbcontext.Ingredients.ToListAsync();
         }
 
-        public Ingredient GetEntity(int id)
+        public async Task<Ingredient> GetEntity(int id)
         {
-            throw new NotImplementedException();
+            var entity = await _cisDbcontext.Ingredients.FindAsync(id);
+            if (entity != null)
+                return entity;
+            return null;
         }
 
-        public void RemoveEntity(int id)
+        public async Task RemoveEntity(int id)
         {
             var identity = _cisDbcontext.Ingredients.Find(id);
             if (identity != null)
             {
                 var res = _cisDbcontext.Ingredients.Remove(identity);
-                _cisDbcontext.SaveChanges();
+                await SaveChangesAsync();
             }
         }
 
-        public Task<bool> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            var result = await _cisDbcontext.SaveChangesAsync();
+            return result;
         }
 
-        public void UpdateEntity(Ingredient ingredient)
+        public async Task UpdateEntity(Ingredient ingredient)
         {
             var entityInDb = _cisDbcontext.Ingredients
                 .Where(x => x.Id == ingredient.Id).SingleOrDefault();
             if (entityInDb == null)
-                return;
+                return ;
             entityInDb.IngredientName = ingredient.IngredientName;
             entityInDb.IngredientDescription = ingredient.IngredientDescription;
-            _cisDbcontext.SaveChanges();
+            await SaveChangesAsync();
         }
     }
 }

@@ -9,11 +9,11 @@ namespace Cis.Persistance.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        T GetEntity(int id);
-        List<T> GetAllEntities();
-        void RemoveEntity(int id);
-        void UpdateEntity(T post);
-        void AddEntity(T post);
-        Task<bool> SaveChangesAsync();
+        Task<T> GetEntity(int id);
+        Task<List<T>> GetAllEntities();
+        Task RemoveEntity(int id);
+        Task UpdateEntity(T post);
+        Task AddEntity(T post);
+        Task<int> SaveChangesAsync();
     }
 }

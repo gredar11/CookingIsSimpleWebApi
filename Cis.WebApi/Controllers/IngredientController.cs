@@ -19,9 +19,9 @@ namespace Cis.WebApi.Controllers
             repository = cisDb;
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var allIngredients = repository.GetAllEntities();
+            var allIngredients = await repository.GetAllEntities();
             return Ok(allIngredients);
         }
         [HttpGet]
