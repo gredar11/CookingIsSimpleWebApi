@@ -17,6 +17,24 @@ namespace Cis.Persistance
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
+            modelBuilder.Entity<Ingredient>().HasData(
+                new Ingredient
+                {
+                    Id = 4,
+                    IngredientName = "Pumpkin",
+                    IngredientDescription = "Orange"
+                },
+                new Ingredient
+                {
+                    Id = 5,
+                    IngredientName = "Pickle",
+                    IngredientDescription = "Salty and green"
+                }, new Ingredient
+                {
+                    Id = 6,
+                    IngredientName = "Carrot",
+                    IngredientDescription = "Bugs Bunny likes it."
+                });
         }
     }
 }
