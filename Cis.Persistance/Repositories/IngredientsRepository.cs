@@ -16,10 +16,11 @@ namespace Cis.Persistance.Repositories
             _cisDbcontext = cisDbContext;
         }
 
-        public async Task AddEntity(Ingredient ingredient)
+        public async Task<int> AddEntity(Ingredient ingredient)
         {
-            await _cisDbcontext.AddAsync(ingredient);
+            var result = await _cisDbcontext.AddAsync(ingredient);
             await SaveChangesAsync();
+            return result.Property(p => p.Id).CurrentValue;
         }
 
         public async Task<List<Ingredient>> GetAllEntities()

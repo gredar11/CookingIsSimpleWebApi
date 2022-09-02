@@ -18,25 +18,6 @@ using (var scope = app.Services.CreateScope())
         var context = serviceProvider.GetRequiredService<CisDbContext>();
         //context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
-        context.Ingredients.Add(new Ingredient()
-        {
-            Id = 1,
-            IngredientName = "Pepper",
-            IngredientDescription = "Red vegetable. Spicy."
-        });
-        context.Ingredients.Add(new Ingredient()
-        {
-            Id = 2,
-            IngredientName = "Tomato",
-            IngredientDescription = "Red vegetable. Not spicy."
-        });
-        context.Ingredients.Add(new Ingredient()
-        {
-            Id = 3,
-            IngredientName = "Potato",
-            IngredientDescription = "Grows under the ground."
-        });
-        context.SaveChanges();
     }
     catch (Exception)
     {

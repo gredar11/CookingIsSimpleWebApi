@@ -18,6 +18,7 @@ namespace Cis.Persistance
             var connectionString = configuration["DbConnection"];
             services.AddDbContext<CisDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Cis.WebApi")));
             services.AddScoped<IngredientsRepository>();
+            services.AddScoped<FoodCategoryRepository>();
             return services;
         }
     }

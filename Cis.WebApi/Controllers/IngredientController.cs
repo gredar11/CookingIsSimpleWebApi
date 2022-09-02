@@ -29,6 +29,7 @@ namespace Cis.WebApi.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var res = await repository.GetEntity(id);
+            ViewBag.Ingredient = res;
             return Ok(res);
         }
         [HttpDelete]
@@ -41,14 +42,19 @@ namespace Cis.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Ingredient ingredient)
         {
-            await repository.AddEntity(ingredient);
-            return Ok();
+            var idOfEntity = await repository.AddEntity(ingredient);
+            return Ok(idOfEntity);
         }
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] Ingredient ingredient)
         {
             await repository.UpdateEntity(ingredient);
             return Ok();
+        }
+        public ViewResult GetModelView()
+        {
+
+            return View("Index");
         }
     }
 }

@@ -12,11 +12,14 @@ namespace Cis.Persistance
     public class CisDbContext:DbContext
     {
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<FoodCategory> FoodCategories { get; set; }
         public CisDbContext(DbContextOptions<CisDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
+            modelBuilder.Entity<Ingredient>().HasOne(x => x.Category).WithMany(x => x.Ingredients).HasForeignKey(x => x.CategoryId);
             modelBuilder.Entity<Ingredient>().HasData(
                 new Ingredient
                 {

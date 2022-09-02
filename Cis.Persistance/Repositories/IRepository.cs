@@ -13,7 +13,7 @@ namespace Cis.Persistance.Repositories
         Task<List<T>> GetAllEntities();
         Task RemoveEntity(int id);
         Task UpdateEntity(T post);
-        Task AddEntity(T post);
+        Task<int> AddEntity(T post);
         Task<int> SaveChangesAsync();
     }
 }
