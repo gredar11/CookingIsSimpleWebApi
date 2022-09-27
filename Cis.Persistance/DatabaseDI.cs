@@ -13,13 +13,10 @@ namespace Cis.Persistance
     // database dependency injection
     public static class DatabaseDI
     {
-        public static IServiceCollection AddPersistance(this IServiceCollection services, IConfiguration configuration)
+        public static void AddPersistance(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["DbConnection"];
             services.AddDbContext<CisDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Cis.WebApi")));
-            services.AddScoped<IngredientsRepository>();
-            services.AddScoped<FoodCategoryRepository>();
-            return services;
         }
     }
 }

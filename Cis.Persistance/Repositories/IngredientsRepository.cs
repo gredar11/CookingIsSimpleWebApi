@@ -1,4 +1,5 @@
 ﻿using Cis.Domain.Models;
+using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cis.Persistance.Repositories
 {
-    public class IngredientsRepository : IRepository<Ingredient>
+    public class IngredientsRepository
     {
         private readonly CisDbContext _cisDbcontext;
         public IngredientsRepository(CisDbContext cisDbContext)
@@ -23,7 +24,7 @@ namespace Cis.Persistance.Repositories
             return result.Property(p => p.Id).CurrentValue;
         }
 
-        public async Task<List<Ingredient>> GetAllEntities()
+        public async Task<List<Ingredient>> GetIngredientsAsync()
         {
             return await _cisDbcontext.Ingredients.ToListAsync();
         }
@@ -35,7 +36,6 @@ namespace Cis.Persistance.Repositories
                 return entity;
             return null;
         }
-
         public async Task RemoveEntity(int id)
         {
             var identity = _cisDbcontext.Ingredients.Find(id);

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Cis.Domain\Cis.Domain.csproj" />
+    <ProjectReference Include="..\Contracts\Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,15 @@
 using Cis.Domain.Models;
 using Cis.Persistance;
+using Cis.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //builder.Services.AddDbContext<CisDbContext>();
 builder.Services.AddPersistance(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureServiceManager();
 builder.Services.AddControllers();
-builder.Services.AddMvc();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

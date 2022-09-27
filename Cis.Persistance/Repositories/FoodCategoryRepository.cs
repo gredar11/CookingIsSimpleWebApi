@@ -1,4 +1,5 @@
 ﻿using Cis.Domain.Models;
+using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Cis.Persistance.Repositories
 {
-    public class FoodCategoryRepository : IRepository<FoodCategory>
+    public class FoodCategoryRepository: IFoodCategoryRepository
     {
         private readonly CisDbContext _cisDbcontext;
         public FoodCategoryRepository(CisDbContext cisDbcontext)
@@ -23,7 +24,7 @@ namespace Cis.Persistance.Repositories
             return res;
         }
 
-        public async Task<List<FoodCategory>> GetAllEntities()
+        public async Task<IEnumerable<FoodCategory>> GetFoodCategories()
         {
             var res = await _cisDbcontext.FoodCategories.ToListAsync();
             return res;
