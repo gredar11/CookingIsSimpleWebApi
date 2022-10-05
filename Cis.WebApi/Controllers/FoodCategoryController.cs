@@ -42,5 +42,10 @@ namespace Cis.WebApi.Controllers
             var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
             return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateFoodCategory([FromBody] FoodCategoryForUpdateDto updateDto)
+        {
+
+        }
     }
 }
