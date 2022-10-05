@@ -14,6 +14,8 @@ namespace Cis.WebApi.Mappings
         public MappingProfile()
         {
             CreateMap<FoodCategory, FoodCategoryDto>();
+            CreateMap<FoodCategoryForCreationDto, FoodCategory>();
+            CreateMap<FoodCategoryForUpdateDto, FoodCategory>();
         }
     }
 }

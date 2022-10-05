@@ -10,6 +10,11 @@ namespace Service.Contracts
 {
     public interface IFoodCategoryService
     {
-        Task<IEnumerable<FoodCategoryDto>> GetFoodCategories();
+        Task<IEnumerable<FoodCategoryDto>> GetFoodCategories(bool trackChanges);
+        Task<FoodCategoryDto> GetFoodCategoryById(int id, bool trackChanges);
+        Task DeleteFoodCategory(int foodCategoryId, bool trackChanges);
+        Task UpdateFoodCategory(int id , FoodCategoryForUpdateDto updateDto, bool trackChanges);
+        Task<FoodCategoryDto> CreateFoodCategory(FoodCategoryForCreationDto creationDto);
+
     }
 }

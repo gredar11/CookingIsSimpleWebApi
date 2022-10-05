@@ -2,6 +2,7 @@
 using Cis.Persistance.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,23 @@ namespace Cis.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var allFoodCategorys = await serviceManager.FoodCategoryService.GetFoodCategories();
-            return Ok(allFoodCategorys);
+            var allFoodCategories = await serviceManager.FoodCategoryService.GetFoodCategories(trackChanges:false);
+            return Ok(allFoodCategories);
         }
-        
+
+        [HttpGet("{id}", Name = "GetFoodCategoryById")]
+        public async Task<IActionResult> GetFoodCategoryById(int id)
+        {
+            var result = await serviceManager.FoodCategoryService.GetFoodCategoryById(id, trackChanges: false);
+            return Ok(result);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)
+        {
+            if (creationDto == null)
+                return BadRequest("FoodCategory dto is empty..");
+            var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
+            return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
+        }
     }
 }
