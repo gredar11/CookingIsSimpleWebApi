@@ -9,58 +9,30 @@ using System.Threading.Tasks;
 
 namespace Cis.Persistance.Repositories
 {
-    public class IngredientsRepository
+    public class IngredientsRepository : RepositoryBase<Ingredient>, IIngreditentRepository
     {
-        private readonly CisDbContext _cisDbcontext;
-        public IngredientsRepository(CisDbContext cisDbContext)
+        public IngredientsRepository(CisDbContext repositoryContext):base(repositoryContext)
         {
-            _cisDbcontext = cisDbContext;
+
+        }
+        public void CreateIngredient(Ingredient ingredient)
+        {
+            Create(ingredient);
         }
 
-        public async Task<int> AddEntity(Ingredient ingredient)
+        public void DeleteIngredientById(Ingredient ingredient)
         {
-            var result = await _cisDbcontext.AddAsync(ingredient);
-            await SaveChangesAsync();
-            return result.Property(p => p.Id).CurrentValue;
+            Delete(ingredient);
         }
 
-        public async Task<List<Ingredient>> GetIngredientsAsync()
+        public async Task<Ingredient> GetIngredientById(int id, bool trackChanges)
         {
-            return await _cisDbcontext.Ingredients.ToListAsync();
+            return await FindByCondition(ingredient => ingredient.Id == id, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<Ingredient> GetEntity(int id)
+        public async Task<IEnumerable<Ingredient>> GetIngredients(bool trackChanges)
         {
-            var entity = await _cisDbcontext.Ingredients.FindAsync(id);
-            if (entity != null)
-                return entity;
-            return null;
-        }
-        public async Task RemoveEntity(int id)
-        {
-            var identity = _cisDbcontext.Ingredients.Find(id);
-            if (identity != null)
-            {
-                var res = _cisDbcontext.Ingredients.Remove(identity);
-                await SaveChangesAsync();
-            }
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            var result = await _cisDbcontext.SaveChangesAsync();
-            return result;
-        }
-
-        public async Task UpdateEntity(Ingredient ingredient)
-        {
-            var entityInDb = _cisDbcontext.Ingredients
-                .Where(x => x.Id == ingredient.Id).SingleOrDefault();
-            if (entityInDb == null)
-                return ;
-            entityInDb.IngredientName = ingredient.IngredientName;
-            entityInDb.IngredientDescription = ingredient.IngredientDescription;
-            await SaveChangesAsync();
+            return await FindAll(trackChanges).ToListAsync();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Contracts
     public interface IRepositoryManager
     {
         IFoodCategoryRepository FoodCategoryRepository { get; }
+        IIngreditentRepository IngreditentRepository { get; }
         Task SaveAsync();
+
     }
 }

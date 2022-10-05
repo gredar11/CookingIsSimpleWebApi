@@ -9,6 +9,10 @@ namespace Contracts
 {
     public interface IFoodCategoryRepository
     {
-        Task<IEnumerable<FoodCategory>> GetFoodCategories();
+        Task<IEnumerable<FoodCategory>> GetFoodCategories(bool trackChanges);
+        Task<FoodCategory> GetFoodCategoryById(int id, bool trackChanges);
+        Task CreateFoodCategory(FoodCategory foodCategory);
+        void UpdateFoodCategory(FoodCategory foodCategory);
+        void DeleteFoodCategory(FoodCategory foodCategory);
     }
 }

@@ -9,50 +9,35 @@ using System.Threading.Tasks;
 
 namespace Cis.Persistance.Repositories
 {
-    public class FoodCategoryRepository: IFoodCategoryRepository
+    public class FoodCategoryRepository : RepositoryBase<FoodCategory>, IFoodCategoryRepository
     {
-        private readonly CisDbContext _cisDbcontext;
-        public FoodCategoryRepository(CisDbContext cisDbcontext)
+        public FoodCategoryRepository(CisDbContext cisDbContext) : base(cisDbContext)
         {
-            _cisDbcontext = cisDbcontext;
+
+        }
+        public async Task CreateFoodCategory(FoodCategory foodCategory)
+        {
+            await RepositoryContext.FoodCategories.AddAsync(foodCategory);
         }
 
-        public async Task<int> AddEntity(FoodCategory post)
+        public void DeleteFoodCategory(FoodCategory foodCategory)
         {
-            _cisDbcontext.FoodCategories.Add(post);
-            var res = await _cisDbcontext.SaveChangesAsync();
-            return res;
+            Delete(foodCategory);
         }
 
-        public async Task<IEnumerable<FoodCategory>> GetFoodCategories()
+        public async Task<IEnumerable<FoodCategory>> GetFoodCategories(bool trackChanges)
         {
-            var res = await _cisDbcontext.FoodCategories.ToListAsync();
-            return res;
+            return await FindAll(trackChanges).ToListAsync();
         }
 
-        public async Task<FoodCategory> GetEntity(int id)
+        public async Task<FoodCategory> GetFoodCategoryById(int id, bool trackChanges)
         {
-            var res = await _cisDbcontext.FoodCategories.FindAsync(id);
-            return res;
+            return await FindByCondition(f => f.Id == id, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task RemoveEntity(int id)
+        public void UpdateFoodCategory(FoodCategory foodCategory)
         {
-            var entityToRemove = _cisDbcontext.FoodCategories.Find(id);
-            _cisDbcontext.FoodCategories.Remove(entityToRemove);
-            await _cisDbcontext.SaveChangesAsync();
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            var res = await _cisDbcontext.SaveChangesAsync();
-            return res;
-        }
-
-        public async Task UpdateEntity(FoodCategory post)
-        {
-            _cisDbcontext.FoodCategories.Update(post);
-            await _cisDbcontext.SaveChangesAsync();
+            Update(foodCategory);
         }
     }
 }
