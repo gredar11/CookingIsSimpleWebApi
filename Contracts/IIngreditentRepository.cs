@@ -9,10 +9,10 @@ namespace Contracts
 {
     public interface IIngreditentRepository
     {
-        Task<IEnumerable<Ingredient>> GetIngredients(bool trackChanges);
-        Task<Ingredient> GetIngredientById(int id, bool trackChanges);
+        Task<IEnumerable<Ingredient>> GetIngredients(int categoryId, bool trackChanges);
+        Task<Ingredient> GetIngredientById(int categoryId, int id, bool trackChanges);
         void DeleteIngredientById(Ingredient ingredient);
-        void CreateIngredient(Ingredient ingredient);
+        void CreateIngredient(int categoryId, Ingredient ingredient);
 
     }
 }

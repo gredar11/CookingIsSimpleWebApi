@@ -15,8 +15,9 @@ namespace Cis.Persistance.Repositories
         {
 
         }
-        public void CreateIngredient(Ingredient ingredient)
+        public void CreateIngredient(int categoryId, Ingredient ingredient)
         {
+            ingredient.CategoryId = categoryId;
             Create(ingredient);
         }
 
@@ -25,14 +26,14 @@ namespace Cis.Persistance.Repositories
             Delete(ingredient);
         }
 
-        public async Task<Ingredient> GetIngredientById(int id, bool trackChanges)
+        public async Task<Ingredient> GetIngredientById(int categoryId, int id, bool trackChanges)
         {
-            return await FindByCondition(ingredient => ingredient.Id == id, trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(ingredient => ingredient.Id == id && ingredient.CategoryId == categoryId, trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Ingredient>> GetIngredients(bool trackChanges)
+        public async Task<IEnumerable<Ingredient>> GetIngredients(int categoryId, bool trackChanges)
         {
-            return await FindAll(trackChanges).ToListAsync();
+            return await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges).OrderBy(ingr => ingr.IngredientName).ToListAsync();
         }
     }
 }

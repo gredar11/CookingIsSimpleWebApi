@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class FoodCategoryService:IFoodCategoryService
+    public class FoodCategoryService : IFoodCategoryService
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
@@ -24,18 +24,16 @@ namespace Service
 
         public async Task<FoodCategoryDto> CreateFoodCategory(FoodCategoryForCreationDto creationDto)
         {
-            // add dto null - validation
             var entity = _mapper.Map<FoodCategory>(creationDto);
             await _repository.FoodCategoryRepository.CreateFoodCategory(entity);
             await _repository.SaveAsync();
             return _mapper.Map<FoodCategoryDto>(entity);
-
         }
 
         public async Task DeleteFoodCategory(int foodCategoryId, bool trackChanges)
         {
             var entity = await _repository.FoodCategoryRepository.GetFoodCategoryById(foodCategoryId, trackChanges);
-            if(entity is null)
+            if (entity is null)
                 throw new FoodCategoryNotFoundException(foodCategoryId);
             _repository.FoodCategoryRepository.DeleteFoodCategory(entity);
             await _repository.SaveAsync();

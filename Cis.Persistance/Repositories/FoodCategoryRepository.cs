@@ -27,7 +27,7 @@ namespace Cis.Persistance.Repositories
 
         public async Task<IEnumerable<FoodCategory>> GetFoodCategories(bool trackChanges)
         {
-            return await FindAll(trackChanges).ToListAsync();
+            return await FindAll(trackChanges).OrderBy(c => c.NameOfCategory).ToListAsync();
         }
 
         public async Task<FoodCategory> GetFoodCategoryById(int id, bool trackChanges)

@@ -9,7 +9,7 @@ namespace Cis.Domain.Models
     public class Ingredient
     {
         public int Id { get; set; }
-        public string IngredientName { get; set; } = "";
+        public string IngredientName { get; set; }
         public string? IngredientDescription { get; set; }
         public int? CategoryId { get; set; }
         public FoodCategory? Category { get; set; }
