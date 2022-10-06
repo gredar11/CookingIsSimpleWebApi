@@ -68,7 +68,7 @@ namespace Service
 
         }
 
-        public async Task UpgradeIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges)
+        public async Task UpdateIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges)
         {
             var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
             if (category == null)

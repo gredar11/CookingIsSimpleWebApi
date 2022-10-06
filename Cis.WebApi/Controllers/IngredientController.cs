@@ -36,5 +36,17 @@ namespace Cis.WebApi.Controllers
             var res = await _serviceManager.IngredientService.CreateIngredientForCategory(foodCategoryId, creationDto, trackChanges: false);
             return CreatedAtRoute(nameof(GetIngredientByFoodCategory), new { foodCategoryId = foodCategoryId, id = res.Id }, res);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateIngredient(int foodCategoryId, int id, [FromBody] IngredientForUpdateDto updateDto)
+        {
+            await _serviceManager.IngredientService.UpdateIngredientForCategory(foodCategoryId, id, updateDto, trackChanges: false);
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIngredient(int foodCategoryId, int id)
+        {
+            await _serviceManager.IngredientService.DeleteIngredient(foodCategoryId, id, trackChanges: false);
+            return NoContent();
+        }
     }
 }

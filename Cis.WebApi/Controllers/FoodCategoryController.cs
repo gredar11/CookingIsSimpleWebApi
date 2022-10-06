@@ -47,13 +47,13 @@ namespace Cis.WebApi.Controllers
         {
             if (updateDto == null)
                 return BadRequest("Dto is null");
-            await serviceManager.FoodCategoryService.UpdateFoodCategory(id, updateDto, trackChanges: false);
+            await serviceManager.FoodCategoryService.UpdateFoodCategory(id, updateDto, trackChanges: true);
             return Ok();
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFoodCategory(int id)
         {
-            await serviceManager.FoodCategoryService.DeleteFoodCategory(id, trackChanges: false);
+            await serviceManager.FoodCategoryService.DeleteFoodCategory(id, trackChanges: true);
             return NoContent();
         }
     }
