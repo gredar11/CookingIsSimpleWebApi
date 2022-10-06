@@ -22,7 +22,7 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<IngredientDto> CreateIngredientForCategory(int categoryId, int ingredientId, IngredientForCreationDto forCreationDto, bool trackChanges)
+        public async Task<IngredientDto> CreateIngredientForCategory(int categoryId, IngredientForCreationDto forCreationDto, bool trackChanges)
         {
             var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
             if(category is null)
@@ -34,24 +34,50 @@ namespace Service
             return res;
         }
 
-        public Task DeleteIngredient(int categoryId, int ingredientId)
+        public async Task DeleteIngredient(int categoryId, int ingredientId, bool trackChanges)
         {
-            throw new NotImplementedException();
+            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
+            if (category == null)
+                throw new FoodCategoryNotFoundException(categoryId);
+            var entityToDelete = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
+            if (entityToDelete is null)
+                throw new IngredientNotFoundException(ingredientId);
+            _repository.IngreditentRepository.DeleteIngredientById(entityToDelete);
+            await _repository.SaveAsync();
         }
 
-        public Task<Ingredient> GetIngredientByCategory(int categoryId, int ingredientId, bool trackChanges)
+        public async Task<IngredientDto> GetIngredientByCategory(int categoryId, int ingredientId, bool trackChanges)
         {
-            throw new NotImplementedException();
+            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
+            if (category == null)
+                throw new FoodCategoryNotFoundException(categoryId);
+            var entity = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
+            if (entity is null)
+                throw new IngredientNotFoundException(ingredientId);
+            return _mapper.Map<IngredientDto>(entity);
+
         }
 
-        public Task<IEnumerable<IngredientDto>> GetIngredientsByFoodCategory(int foodCategoryId, bool trackChanges)
+        public async Task<IEnumerable<IngredientDto>> GetIngredientsByFoodCategory(int foodCategoryId, bool trackChanges)
         {
-            throw new NotImplementedException();
+            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(foodCategoryId, trackChanges);
+            if (category == null)
+                throw new FoodCategoryNotFoundException(foodCategoryId);
+            var entities = await _repository.IngreditentRepository.GetIngredients(foodCategoryId, trackChanges);
+            return _mapper.Map<IEnumerable<IngredientDto>>(entities);
+
         }
 
-        public Task UpgradeIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges)
+        public async Task UpgradeIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges)
         {
-            throw new NotImplementedException();
+            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
+            if (category == null)
+                throw new FoodCategoryNotFoundException(categoryId);
+            var entity = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
+            if (entity is null)
+                throw new IngredientNotFoundException(ingredientId);
+            _mapper.Map(updateDto, entity);
+            await _repository.SaveAsync();
         }
     }
 }

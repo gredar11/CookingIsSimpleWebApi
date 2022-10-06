@@ -43,9 +43,18 @@ namespace Cis.WebApi.Controllers
             return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateFoodCategory([FromBody] FoodCategoryForUpdateDto updateDto)
+        public async Task<IActionResult> UpdateFoodCategory(int id, [FromBody] FoodCategoryForUpdateDto updateDto)
         {
-
+            if (updateDto == null)
+                return BadRequest("Dto is null");
+            await serviceManager.FoodCategoryService.UpdateFoodCategory(id, updateDto, trackChanges: false);
+            return Ok();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFoodCategory(int id)
+        {
+            await serviceManager.FoodCategoryService.DeleteFoodCategory(id, trackChanges: false);
+            return NoContent();
         }
     }
 }
