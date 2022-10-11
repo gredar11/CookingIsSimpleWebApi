@@ -37,7 +37,7 @@ namespace Service
         {
             await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
 
-            var entityToDelete = await var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+            var entityToDelete =  await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
 
             _repository.IngreditentRepository.DeleteIngredientById(entityToDelete);
             await _repository.SaveAsync();
@@ -47,7 +47,7 @@ namespace Service
         {
             await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
 
-            var entity = await var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+            var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
 
             return _mapper.Map<IngredientDto>(entity);
 
