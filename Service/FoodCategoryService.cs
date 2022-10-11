@@ -32,9 +32,8 @@ namespace Service
 
         public async Task DeleteFoodCategory(int foodCategoryId, bool trackChanges)
         {
-            var entity = await _repository.FoodCategoryRepository.GetFoodCategoryById(foodCategoryId, trackChanges);
-            if (entity is null)
-                throw new FoodCategoryNotFoundException(foodCategoryId);
+            var entity = await GetCompanyAndCheckIfItExists(foodCategoryId, trackChanges);
+
             _repository.FoodCategoryRepository.DeleteFoodCategory(entity);
             await _repository.SaveAsync();
         }
@@ -48,20 +47,23 @@ namespace Service
 
         public async Task<FoodCategoryDto> GetFoodCategoryById(int id, bool trackChanges)
         {
-            var entity = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackChanges);
-            if (entity is null)
-                throw new FoodCategoryNotFoundException(id);
+            var entity = await GetCompanyAndCheckIfItExists(id, trackChanges);
+
             var result = _mapper.Map<FoodCategoryDto>(entity);
             return result;
         }
 
         public async Task UpdateFoodCategory(int id, FoodCategoryForUpdateDto updateDto, bool trackChanges)
         {
-            var entity = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackChanges);
-            if (entity is null)
-                throw new FoodCategoryNotFoundException(id);
+            var entity = await GetCompanyAndCheckIfItExists(id, trackChanges);
             _mapper.Map(updateDto, entity);
             await _repository.SaveAsync();
+        }
+        private async Task<FoodCategory> GetCompanyAndCheckIfItExists(int id, bool trackChanges) 
+        { 
+            var foodCategory = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackChanges); 
+            if (foodCategory is null) throw new FoodCategoryNotFoundException(id); 
+            return foodCategory; 
         }
     }
 }

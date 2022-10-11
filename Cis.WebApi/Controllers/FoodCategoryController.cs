@@ -1,5 +1,6 @@
 ﻿using Cis.Domain.Models;
 using Cis.Persistance.Repositories;
+using Cis.WebApi.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
@@ -35,18 +36,16 @@ namespace Cis.WebApi.Controllers
             return Ok(result);
         }
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)
         {
-            if (creationDto == null)
-                return BadRequest("FoodCategory dto is empty..");
             var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
             return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
         }
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> UpdateFoodCategory(int id, [FromBody] FoodCategoryForUpdateDto updateDto)
         {
-            if (updateDto == null)
-                return BadRequest("Dto is null");
             await serviceManager.FoodCategoryService.UpdateFoodCategory(id, updateDto, trackChanges: true);
             return Ok();
         }

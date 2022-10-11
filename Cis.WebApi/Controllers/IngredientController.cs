@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cis.WebApi.ActionFilters;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
 using System;
@@ -31,12 +32,14 @@ namespace Cis.WebApi.Controllers
             return Ok(res);
         }
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> CreateIngredient(int foodCategoryId, [FromBody] IngredientForCreationDto creationDto)
         {
             var res = await _serviceManager.IngredientService.CreateIngredientForCategory(foodCategoryId, creationDto, trackChanges: false);
             return CreatedAtRoute(nameof(GetIngredientByFoodCategory), new { foodCategoryId = foodCategoryId, id = res.Id }, res);
         }
         [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> UpdateIngredient(int foodCategoryId, int id, [FromBody] IngredientForUpdateDto updateDto)
         {
             await _serviceManager.IngredientService.UpdateIngredientForCategory(foodCategoryId, id, updateDto, trackChanges: false);

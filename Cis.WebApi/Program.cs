@@ -1,5 +1,6 @@
 using Cis.Domain.Models;
 using Cis.Persistance;
+using Cis.WebApi.ActionFilters;
 using Cis.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddScoped<ValidationFilterArrtibute>();
 
 var app = builder.Build();
 

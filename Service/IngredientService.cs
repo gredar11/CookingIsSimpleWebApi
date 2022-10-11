@@ -24,9 +24,8 @@ namespace Service
 
         public async Task<IngredientDto> CreateIngredientForCategory(int categoryId, IngredientForCreationDto forCreationDto, bool trackChanges)
         {
-            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
-            if(category is null)
-                throw new FoodCategoryNotFoundException(categoryId);
+            await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
+
             var entity = _mapper.Map<Ingredient>(forCreationDto);
             _repository.IngreditentRepository.CreateIngredient(categoryId, entity);
             await _repository.SaveAsync();
@@ -36,33 +35,28 @@ namespace Service
 
         public async Task DeleteIngredient(int categoryId, int ingredientId, bool trackChanges)
         {
-            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
-            if (category == null)
-                throw new FoodCategoryNotFoundException(categoryId);
-            var entityToDelete = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
-            if (entityToDelete is null)
-                throw new IngredientNotFoundException(ingredientId);
+            await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
+
+            var entityToDelete = await var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+
             _repository.IngreditentRepository.DeleteIngredientById(entityToDelete);
             await _repository.SaveAsync();
         }
 
         public async Task<IngredientDto> GetIngredientByCategory(int categoryId, int ingredientId, bool trackChanges)
         {
-            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
-            if (category == null)
-                throw new FoodCategoryNotFoundException(categoryId);
-            var entity = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
-            if (entity is null)
-                throw new IngredientNotFoundException(ingredientId);
+            await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
+
+            var entity = await var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+
             return _mapper.Map<IngredientDto>(entity);
 
         }
 
         public async Task<IEnumerable<IngredientDto>> GetIngredientsByFoodCategory(int foodCategoryId, bool trackChanges)
         {
-            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(foodCategoryId, trackChanges);
-            if (category == null)
-                throw new FoodCategoryNotFoundException(foodCategoryId);
+            await CheckIfFoodCategoryIsExist(foodCategoryId, trackChanges);
+
             var entities = await _repository.IngreditentRepository.GetIngredients(foodCategoryId, trackChanges);
             return _mapper.Map<IEnumerable<IngredientDto>>(entities);
 
@@ -70,14 +64,24 @@ namespace Service
 
         public async Task UpdateIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges)
         {
-            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(categoryId, trackChanges);
+            await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
+
+            var entity = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+            _mapper.Map(updateDto, entity);
+            await _repository.SaveAsync();
+        }
+        public async Task CheckIfFoodCategoryIsExist(int id, bool trackchanges)
+        {
+            var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackchanges);
             if (category == null)
-                throw new FoodCategoryNotFoundException(categoryId);
+                throw new FoodCategoryNotFoundException(id);
+        }
+        public async Task<Ingredient> CheckIfIngredientIsExist(int categoryId, int ingredientId, bool trackChanges)
+        {
             var entity = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
             if (entity is null)
                 throw new IngredientNotFoundException(ingredientId);
-            _mapper.Map(updateDto, entity);
-            await _repository.SaveAsync();
+            return entity;
         }
     }
 }
