@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Cis.WebApi.Controllers
@@ -20,15 +22,16 @@ namespace Cis.WebApi.Controllers
             _serviceManager = serviceManager;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllIngredientsByFoodCategory(int foodCategoryId)
+        public async Task<IActionResult> GetAllIngredientsByFoodCategory(int foodCategoryId, [FromQuery] IngredientParameters ingredientParameters)
         {
-            var result = await _serviceManager.IngredientService.GetIngredientsByFoodCategory(foodCategoryId, trackChanges: false);
-            return Ok(result);
+            var result = await _serviceManager.IngredientService.GetAllIngredientsFromFoodCategory(foodCategoryId, ingredientParameters, trackChanges: false);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.Item2));
+            return Ok(result.Item1);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetIngredientByFoodCategory")]
         public async Task<IActionResult> GetIngredientByFoodCategory(int foodCategoryId, int id)
         {
-            var res = await _serviceManager.IngredientService.GetIngredientByCategory(foodCategoryId, id, trackChanges: false);
+            var res = await _serviceManager.IngredientService.GetIngredientFromFoodCategoryById(foodCategoryId, id, trackChanges: false);
             return Ok(res);
         }
         [HttpPost]
@@ -36,7 +39,7 @@ namespace Cis.WebApi.Controllers
         public async Task<IActionResult> CreateIngredient(int foodCategoryId, [FromBody] IngredientForCreationDto creationDto)
         {
             var res = await _serviceManager.IngredientService.CreateIngredientForCategory(foodCategoryId, creationDto, trackChanges: false);
-            return CreatedAtRoute(nameof(GetIngredientByFoodCategory), new { foodCategoryId = foodCategoryId, id = res.Id }, res);
+            return CreatedAtRoute("GetIngredientByFoodCategory", new { foodCategoryId = foodCategoryId, id = res.Id }, res);
         }
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterArrtibute))]

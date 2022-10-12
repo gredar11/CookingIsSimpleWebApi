@@ -4,6 +4,7 @@ using Cis.Domain.Models;
 using Contracts;
 using Service.Contracts;
 using Shared;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace Service
             await _repository.SaveAsync();
         }
 
-        public async Task<IngredientDto> GetIngredientByCategory(int categoryId, int ingredientId, bool trackChanges)
+        public async Task<IngredientDto> GetIngredientFromFoodCategoryById(int categoryId, int ingredientId, bool trackChanges)
         {
             await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
 
@@ -53,12 +54,14 @@ namespace Service
 
         }
 
-        public async Task<IEnumerable<IngredientDto>> GetIngredientsByFoodCategory(int foodCategoryId, bool trackChanges)
+        public async Task<(IEnumerable<IngredientDto>, PageMetaData)> GetAllIngredientsFromFoodCategory(int foodCategoryId,IngredientParameters ingredientParameters, bool trackChanges)
         {
             await CheckIfFoodCategoryIsExist(foodCategoryId, trackChanges);
 
-            var entities = await _repository.IngreditentRepository.GetIngredients(foodCategoryId, trackChanges);
-            return _mapper.Map<IEnumerable<IngredientDto>>(entities);
+            var entitiesWithMetadata = await _repository.IngreditentRepository.GetIngredients(foodCategoryId, ingredientParameters, trackChanges);
+            var entitiesDtos = _mapper.Map<IEnumerable<IngredientDto>>(entitiesWithMetadata);
+
+            return (ingredients: entitiesDtos, metaData: entitiesWithMetadata.MetaData);
 
         }
 
