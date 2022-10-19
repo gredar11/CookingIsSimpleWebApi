@@ -10,6 +10,7 @@ namespace Contracts
     {
         IFoodCategoryRepository FoodCategoryRepository { get; }
         IIngreditentRepository IngreditentRepository { get; }
+        IRecipesCategoryRepository RecipesCategoryRepository { get; }
         Task SaveAsync();
 
     }

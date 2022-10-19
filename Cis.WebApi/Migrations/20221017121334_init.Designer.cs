@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cis.WebApi.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    [Migration("20221005145601_Food categories table addition")]
-    partial class Foodcategoriestableaddition
+    [Migration("20221017121334_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,24 @@ namespace Cis.WebApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Cis.Domain.Models.AmountOfIngredient", b =>
+                {
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
+                    b.HasKey("RecipeId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("AmountOfIngredients");
+                });
 
             modelBuilder.Entity("Cis.Domain.Models.FoodCategory", b =>
                 {
@@ -34,13 +52,17 @@ namespace Cis.WebApi.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("NameOfCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("FoodCategories");
                 });
@@ -72,26 +94,46 @@ namespace Cis.WebApi.Migrations
                         .IsUnique();
 
                     b.ToTable("Ingredients");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            IngredientDescription = "Orange",
-                            IngredientName = "Pumpkin"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IngredientDescription = "Salty and green",
-                            IngredientName = "Pickle"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IngredientDescription = "Bugs Bunny likes it.",
-                            IngredientName = "Carrot"
-                        });
+            modelBuilder.Entity("Cis.Domain.Models.Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("Cis.Domain.Models.AmountOfIngredient", b =>
+                {
+                    b.HasOne("Cis.Domain.Models.Ingredient", "Ingredient")
+                        .WithMany("Recipes")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cis.Domain.Models.Recipe", "Recipe")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Recipe");
                 });
 
             modelBuilder.Entity("Cis.Domain.Models.Ingredient", b =>
@@ -104,6 +146,16 @@ namespace Cis.WebApi.Migrations
                 });
 
             modelBuilder.Entity("Cis.Domain.Models.FoodCategory", b =>
+                {
+                    b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("Cis.Domain.Models.Ingredient", b =>
+                {
+                    b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("Cis.Domain.Models.Recipe", b =>
                 {
                     b.Navigation("Ingredients");
                 });

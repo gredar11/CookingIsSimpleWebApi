@@ -1,5 +1,6 @@
 ﻿using Cis.Domain.Models;
 using Shared;
+using Shared.GetResponseDto;
 using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;

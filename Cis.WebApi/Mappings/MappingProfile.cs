@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Cis.Domain.Models;
 using Shared;
+using Shared.CreationDto;
+using Shared.GetResponseDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace Cis.WebApi.Mappings
     {
         public MappingProfile()
         {
+            CreateMap<RecipeCategoryCreationDto, RecipeCategory>();
+            CreateMap<RecipeCategory, RecipeCategoryDto>();
             CreateMap<FoodCategory, FoodCategoryDto>();
             CreateMap<FoodCategoryForCreationDto, FoodCategory>();
             CreateMap<FoodCategoryForUpdateDto, FoodCategory>();

@@ -4,6 +4,7 @@ using Cis.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cis.WebApi.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221018122122_RecipesDbSet")]
+    partial class RecipesDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,31 +112,9 @@ namespace Cis.WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecipeCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RecipeCategoryId");
 
                     b.ToTable("Recipes");
-                });
-
-            modelBuilder.Entity("Cis.Domain.Models.RecipeCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RecipeCategories");
                 });
 
             modelBuilder.Entity("Cis.Domain.Models.AmountOfIngredient", b =>
@@ -165,17 +145,6 @@ namespace Cis.WebApi.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Cis.Domain.Models.Recipe", b =>
-                {
-                    b.HasOne("Cis.Domain.Models.RecipeCategory", "RecipeCategory")
-                        .WithMany("Recipes")
-                        .HasForeignKey("RecipeCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RecipeCategory");
-                });
-
             modelBuilder.Entity("Cis.Domain.Models.FoodCategory", b =>
                 {
                     b.Navigation("Ingredients");
@@ -189,11 +158,6 @@ namespace Cis.WebApi.Migrations
             modelBuilder.Entity("Cis.Domain.Models.Recipe", b =>
                 {
                     b.Navigation("Ingredients");
-                });
-
-            modelBuilder.Entity("Cis.Domain.Models.RecipeCategory", b =>
-                {
-                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

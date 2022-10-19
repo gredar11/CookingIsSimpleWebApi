@@ -1,5 +1,7 @@
 ﻿using Cis.Domain.Models;
 using Shared;
+using Shared.CreationDto;
+using Shared.GetResponseDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,5 @@ namespace Service.Contracts
         Task DeleteFoodCategory(int foodCategoryId, bool trackChanges);
         Task UpdateFoodCategory(int id , FoodCategoryForUpdateDto updateDto, bool trackChanges);
         Task<FoodCategoryDto> CreateFoodCategory(FoodCategoryForCreationDto creationDto);
-
     }
 }

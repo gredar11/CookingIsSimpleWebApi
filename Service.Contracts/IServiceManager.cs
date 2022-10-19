@@ -10,5 +10,6 @@ namespace Service.Contracts
     {
         IFoodCategoryService FoodCategoryService { get; }
         IIngredientService IngredientService { get; }
+        IRecipeCategoryService RecipeCategoryService { get; }
     }
 }

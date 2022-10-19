@@ -13,31 +13,18 @@ namespace Cis.Persistance
     {
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<FoodCategory> FoodCategories { get; set; }
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<AmountOfIngredient> AmountOfIngredients { get; set; }
+        public DbSet<RecipeCategory> RecipeCategories { get; set; }
         public CisDbContext(DbContextOptions<CisDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.ApplyConfiguration(new RecipeCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new IngredientConfiguration());
+            modelBuilder.ApplyConfiguration(new FoodCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new AmountOfIngredientConfiguration());
             modelBuilder.Entity<Ingredient>().HasOne(x => x.Category).WithMany(x => x.Ingredients).HasForeignKey(x => x.CategoryId);
-            modelBuilder.Entity<Ingredient>().HasData(
-                new Ingredient
-                {
-                    Id = 4,
-                    IngredientName = "Pumpkin",
-                    IngredientDescription = "Orange"
-                },
-                new Ingredient
-                {
-                    Id = 5,
-                    IngredientName = "Pickle",
-                    IngredientDescription = "Salty and green"
-                }, new Ingredient
-                {
-                    Id = 6,
-                    IngredientName = "Carrot",
-                    IngredientDescription = "Bugs Bunny likes it."
-                });
         }
     }
 }
