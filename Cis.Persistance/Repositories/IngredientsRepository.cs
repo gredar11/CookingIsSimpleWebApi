@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cis.Persistance.Repositories
 {
+
     public class IngredientsRepository : RepositoryBase<Ingredient>, IIngreditentRepository
     {
         public IngredientsRepository(CisDbContext repositoryContext) : base(repositoryContext)
@@ -40,5 +41,11 @@ namespace Cis.Persistance.Repositories
             var count = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges).CountAsync();
             return new PagedList<Ingredient>(ingredients,count, ingredientParameters.PageNumber, ingredientParameters.PageSize);
         }
+
+        public async Task<IEnumerable<AmountOfIngredient>> GetIngredientsOfReceip(int receipId, bool trackChanges)
+        {
+            return await RepositoryContext.Set<AmountOfIngredient>().Where(x => x.RecipeId == receipId).ToListAsync();
+        }
+
     }
 }

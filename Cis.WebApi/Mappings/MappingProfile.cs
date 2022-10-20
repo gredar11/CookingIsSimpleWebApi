@@ -17,6 +17,10 @@ namespace Cis.WebApi.Mappings
         {
             CreateMap<RecipeCategoryCreationDto, RecipeCategory>();
             CreateMap<RecipeCategory, RecipeCategoryDto>();
+            CreateMap<AmountOfIngredient, AmountOfIngredientDto>().ReverseMap();
+            CreateMap<RecipeIngredientAddingDto, AmountOfIngredient>();
+            CreateMap<Recipe, RecipeDto>().ReverseMap();
+            CreateMap<RecipeCreationDto, Recipe>();
             CreateMap<FoodCategory, FoodCategoryDto>();
             CreateMap<FoodCategoryForCreationDto, FoodCategory>();
             CreateMap<FoodCategoryForUpdateDto, FoodCategory>();

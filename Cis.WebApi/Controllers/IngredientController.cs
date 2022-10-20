@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Cis.WebApi.Controllers
 {
     [ApiController]
-    [Route("/{foodCategoryId}/[controller]")]
+    [Route("/foodcategory/{foodCategoryId}/[controller]")]
     public class IngredientController:Controller
     {
         private readonly IServiceManager _serviceManager;
