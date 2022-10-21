@@ -42,7 +42,7 @@ namespace Cis.Persistance.Repositories
 
         public async Task<Recipe> GetRecipeById(int categoryId, int id, bool trackChanges)
         {
-            return await FindByCondition(x => x.RecipeCategoryId == categoryId && x.Id == id, trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(x => x.RecipeCategoryId == categoryId && x.Id == id, trackChanges).Include(x =>x.RecipeCategory).SingleOrDefaultAsync();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Cis.WebApi.ActionFilters
             var param = executingContext.ActionArguments.SingleOrDefault(x => x.Value.ToString().Contains("Dto")).Value;
             if(param is null)
             {
-                executingContext.Result = new BadRequestObjectResult($"Object is null: {controller}, action: {action}");
+                executingContext.Result = new BadRequestObjectResult($"Object is null: {controller}, action: {action}.");
                 return;
             }
             if (!executingContext.ModelState.IsValid)

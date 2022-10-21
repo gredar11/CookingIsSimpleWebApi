@@ -25,7 +25,7 @@ namespace Cis.WebApi.Controllers
             return Ok(res);
         }
         [HttpGet("{recipeId}")]
-        public async Task<IActionResult> CreateRecipe(int categoryId, int recipeId)
+        public async Task<IActionResult> GetRecipeById(int categoryId, int recipeId)
         {
             var res = await _serviceManager.RecipeService.GetRecipeByIdFromCategory(categoryId, recipeId, trackChanges: false);
             return Ok(res);
