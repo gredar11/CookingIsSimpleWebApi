@@ -11,5 +11,6 @@ namespace Shared.GetResponseDto
         public int Id { get; init; }
         public string IngredientName { get; init; }
         public string? IngredientDescription { get; init; }
+        public string? FoodCategoryName { get; init; }
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Service
 {
-    public class IngredientService: IIngredientService
+    public class IngredientService : IIngredientService
     {
         private readonly IRepositoryManager _repository;
         private readonly IMapper _mapper;
@@ -39,7 +39,7 @@ namespace Service
         {
             await CheckIfFoodCategoryIsExist(categoryId, trackChanges);
 
-            var entityToDelete =  await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
+            var entityToDelete = await CheckIfIngredientIsExist(categoryId, ingredientId, trackChanges);
 
             _repository.IngreditentRepository.DeleteIngredientById(entityToDelete);
             await _repository.SaveAsync();
@@ -55,7 +55,7 @@ namespace Service
 
         }
 
-        public async Task<(IEnumerable<IngredientDto>, PageMetaData)> GetAllIngredientsFromFoodCategory(int foodCategoryId,IngredientParameters ingredientParameters, bool trackChanges)
+        public async Task<(IEnumerable<IngredientDto>, PageMetaData)> GetAllIngredientsFromFoodCategory(int foodCategoryId, IngredientParameters ingredientParameters, bool trackChanges)
         {
             await CheckIfFoodCategoryIsExist(foodCategoryId, trackChanges);
 
@@ -86,6 +86,31 @@ namespace Service
             if (entity is null)
                 throw new IngredientNotFoundException(ingredientId);
             return entity;
+        }
+
+        public async Task<IEnumerable<IngredientDto>> GetByIds(int categoryId, IEnumerable<int> ids, bool trackChanges)
+        {
+            if (ids == null)
+                throw new IdParametersBadRequestException();
+            var ingredientEntities = await _repository.IngreditentRepository.GetCollectionByIds(categoryId, ids, trackChanges);
+            if (ids.Count() != ingredientEntities.Count())
+                throw new CollectionByIdsBadRequestException();
+            return _mapper.Map<IEnumerable<IngredientDto>>(ingredientEntities);
+        }
+
+        public async Task<(IEnumerable<IngredientDto>, string)> CreateCollectionOfIngredients(int categoryId, IEnumerable<IngredientForCreationDto> creationDtos)
+        {
+            if (creationDtos == null)
+                throw new IngredientCollectionBadRequest();
+            var ingredientEntities = _mapper.Map<IEnumerable<Ingredient>>(creationDtos);
+            foreach (var ingredient in ingredientEntities)
+            {
+                _repository.IngreditentRepository.CreateIngredient(categoryId, ingredient);
+            }
+            await _repository.SaveAsync();
+            var collectionToReturn = _mapper.Map<IEnumerable<IngredientDto>>(await GetByIds(categoryId, ingredientEntities.Select(ing => ing.Id).ToList(), false));
+            var ids = string.Join(",", collectionToReturn.Select(c => c.Id));
+            return (collectionToReturn, ids);
         }
     }
 }

@@ -15,5 +15,6 @@ namespace Contracts
         void DeleteIngredientById(Ingredient ingredient);
         void CreateIngredient(int categoryId, Ingredient ingredient);
         Task<IEnumerable<AmountOfIngredient>> GetIngredientsOfReceip(int receipId, bool trackChanges);
+        Task<IEnumerable<Ingredient>> GetCollectionByIds(int categoryId, IEnumerable<int> ids, bool trackChanges);
     }
 }

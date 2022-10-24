@@ -28,16 +28,21 @@ namespace Cis.Persistance.Repositories
             Delete(ingredient);
         }
 
+        public async Task<IEnumerable<Ingredient>> GetCollectionByIds(int categoryId, IEnumerable<int> ids, bool trackChanges)
+        {
+            return await FindByCondition(x => ids.Contains(x.Id) && x.CategoryId == categoryId , trackChanges).Include(x => x.Category).ToListAsync();
+        }
+
         public async Task<Ingredient> GetIngredientById(int categoryId, int id, bool trackChanges)
         {
-            return await FindByCondition(ingredient => ingredient.Id == id && ingredient.CategoryId == categoryId, trackChanges).SingleOrDefaultAsync();
+            return await FindByCondition(ingredient => ingredient.Id == id && ingredient.CategoryId == categoryId, trackChanges).Include(x => x.Category).SingleOrDefaultAsync();
         }
 
         public async Task<PagedList<Ingredient>> GetIngredients(int categoryId, IngredientParameters ingredientParameters, bool trackChanges)
         {
             var ingredients = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges)
                 .OrderBy(ingr => ingr.IngredientName).Skip((ingredientParameters.PageNumber - 1) * ingredientParameters.PageSize)
-                              .Take(ingredientParameters.PageSize).ToListAsync();
+                              .Take(ingredientParameters.PageSize).Include(x => x.Category).ToListAsync();
             var count = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges).CountAsync();
             return new PagedList<Ingredient>(ingredients,count, ingredientParameters.PageNumber, ingredientParameters.PageSize);
         }

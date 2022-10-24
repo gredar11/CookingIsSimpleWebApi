@@ -17,7 +17,8 @@ namespace Service.Contracts
         Task DeleteIngredient(int categoryId, int ingredientId, bool trackChanges);
         Task<IngredientDto> CreateIngredientForCategory(int categoryId, IngredientForCreationDto forCreationDto, bool trackChanges);
         Task UpdateIngredientForCategory(int categoryId, int ingredientId, IngredientForUpdateDto updateDto, bool trackChanges);
-
+        Task<IEnumerable<IngredientDto>> GetByIds(int categoryId, IEnumerable<int> ids, bool trackChanges);
+        Task<(IEnumerable<IngredientDto> ingredients, string ids)> CreateCollectionOfIngredients(int categoryId, IEnumerable<IngredientForCreationDto> creationDtos);
 
     }
 }

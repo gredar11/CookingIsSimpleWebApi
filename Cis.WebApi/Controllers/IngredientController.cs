@@ -1,4 +1,5 @@
 ﻿using Cis.WebApi.ActionFilters;
+using Cis.WebApi.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
@@ -14,12 +15,25 @@ namespace Cis.WebApi.Controllers
 {
     [ApiController]
     [Route("/foodcategory/{foodCategoryId}/[controller]")]
-    public class IngredientController:Controller
+    public class IngredientController : Controller
     {
         private readonly IServiceManager _serviceManager;
         public IngredientController(IServiceManager serviceManager)
         {
             _serviceManager = serviceManager;
+        }
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
+        public async Task<IActionResult> CreateIngredient(int foodCategoryId, [FromBody] IngredientForCreationDto creationDto)
+        {
+            var res = await _serviceManager.IngredientService.CreateIngredientForCategory(foodCategoryId, creationDto, trackChanges: false);
+            return CreatedAtRoute("GetIngredientByFoodCategory", new { foodCategoryId = foodCategoryId, id = res.Id }, res);
+        }
+        [HttpPost("collection")]
+        public async Task<IActionResult> CreateCollectionForFoodCategory(int foodCategoryId, [FromBody] IEnumerable<IngredientForCreationDto> creationDtos)
+        {
+            var result = await _serviceManager.IngredientService.CreateCollectionOfIngredients(foodCategoryId, creationDtos);
+            return CreatedAtRoute("IngredientCollection", new { foodCategoryId = foodCategoryId, result.ids }, result.ingredients);
         }
         [HttpGet]
         public async Task<IActionResult> GetAllIngredientsByFoodCategory(int foodCategoryId, [FromQuery] IngredientParameters ingredientParameters)
@@ -34,13 +48,14 @@ namespace Cis.WebApi.Controllers
             var res = await _serviceManager.IngredientService.GetIngredientFromFoodCategoryById(foodCategoryId, id, trackChanges: false);
             return Ok(res);
         }
-        [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterArrtibute))]
-        public async Task<IActionResult> CreateIngredient(int foodCategoryId, [FromBody] IngredientForCreationDto creationDto)
+
+        [HttpGet("collection/({ids})", Name = "IngredientCollection")]
+        public async Task<IActionResult> GetIngredientCollection(int foodCategoryId, [ModelBinder(binderType: typeof(ArrayModelBinder))] IEnumerable<int> ids)
         {
-            var res = await _serviceManager.IngredientService.CreateIngredientForCategory(foodCategoryId, creationDto, trackChanges: false);
-            return CreatedAtRoute("GetIngredientByFoodCategory", new { foodCategoryId = foodCategoryId, id = res.Id }, res);
+            var companies = await _serviceManager.IngredientService.GetByIds(foodCategoryId, ids, trackChanges: false);
+            return Ok(companies);
         }
+
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> UpdateIngredient(int foodCategoryId, int id, [FromBody] IngredientForUpdateDto updateDto)

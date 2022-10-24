@@ -23,6 +23,13 @@ namespace Cis.WebApi.Controllers
             this.serviceManager = service;
         }
 
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
+        public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)
+        {
+            var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
+            return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -35,13 +42,6 @@ namespace Cis.WebApi.Controllers
         {
             var result = await serviceManager.FoodCategoryService.GetFoodCategoryById(id, trackChanges: false);
             return Ok(result);
-        }
-        [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterArrtibute))]
-        public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)
-        {
-            var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
-            return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
         }
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterArrtibute))]
