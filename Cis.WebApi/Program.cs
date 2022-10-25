@@ -2,10 +2,14 @@ using Cis.Domain.Models;
 using Cis.Persistance;
 using Cis.WebApi.ActionFilters;
 using Cis.WebApi.Extensions;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddDbContext<CisDbContext>();
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
+builder.Services.ConfigureCors();
+builder.Services.ConfigureLoggerService();
 builder.Services.AddPersistance(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
