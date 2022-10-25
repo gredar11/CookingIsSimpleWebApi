@@ -78,13 +78,13 @@ namespace Service
         {
             var category = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackchanges);
             if (category == null)
-                throw new FoodCategoryNotFoundException(id);
+                throw new EntityNotFoundException<FoodCategory>(id);
         }
         public async Task<Ingredient> CheckIfIngredientIsExist(int categoryId, int ingredientId, bool trackChanges)
         {
             var entity = await _repository.IngreditentRepository.GetIngredientById(categoryId, ingredientId, trackChanges);
             if (entity is null)
-                throw new IngredientNotFoundException(ingredientId);
+                throw new EntityNotFoundException<Ingredient>(ingredientId);
             return entity;
         }
 

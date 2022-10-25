@@ -22,12 +22,18 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<RecipeCategoryDto> CreateRecipeCategory(RecipeCategoryCreationDto creationDto, bool trackChanges)
+        public async Task<RecipeCategoryDto> CreateRecipeCategory(RecipeCategoryCreationDto creationDto)
         {
             var entity = _mapper.Map<RecipeCategory>(creationDto);
-            await _repository.RecipesCategoryRepository.CreateCategory(entity);
+            _repository.RecipesCategoryRepository.CreateCategory(entity);
             await _repository.SaveAsync();
             return _mapper.Map<RecipeCategoryDto>(entity);
+        }
+
+        public async Task DeleteRecipeCategory(int id)
+        {
+            _repository.RecipesCategoryRepository.DeleteCategory(id);
+            await _repository.SaveAsync();
         }
 
         public async Task<IEnumerable<RecipeCategoryDto>> GetAllRecipeCategories(bool trackChanges)

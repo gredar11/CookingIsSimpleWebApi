@@ -1,4 +1,5 @@
-﻿using Cis.Domain.Models;
+﻿using Cis.Domain.Exceptions;
+using Cis.Domain.Models;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,9 +15,17 @@ namespace Cis.Persistance.Repositories
         public RecipeCategoryRepository(CisDbContext repositoryContext) : base(repositoryContext)
         {
         }
-        public async Task CreateCategory(RecipeCategory recipeCategory)
+        public void CreateCategory(RecipeCategory recipeCategory)
         {
-            await RepositoryContext.RecipeCategories.AddAsync(recipeCategory);
+            RepositoryContext.RecipeCategories.AddAsync(recipeCategory);
+        }
+
+        public void DeleteCategory(int id)
+        {
+            var entity = FindByCondition(x => x.Id == id, true).SingleOrDefault();
+            if (entity == null)
+                throw new EntityNotFoundException<RecipeCategory>(id);
+            Delete(entity);
         }
 
         public async Task<IEnumerable<RecipeCategory>> GetAllRecipeCategories(bool trackChanges)
@@ -28,5 +37,6 @@ namespace Cis.Persistance.Repositories
         {
             return await FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
         }
+
     }
 }

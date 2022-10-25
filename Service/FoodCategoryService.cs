@@ -64,7 +64,7 @@ namespace Service
         private async Task<FoodCategory> GetCompanyAndCheckIfItExists(int id, bool trackChanges) 
         { 
             var foodCategory = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackChanges); 
-            if (foodCategory is null) throw new FoodCategoryNotFoundException(id); 
+            if (foodCategory is null) throw new EntityNotFoundException<FoodCategory>(id); 
             return foodCategory; 
         }
     }

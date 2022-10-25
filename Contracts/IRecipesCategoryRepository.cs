@@ -9,8 +9,9 @@ namespace Contracts
 {
     public interface IRecipesCategoryRepository
     {
-        Task CreateCategory(RecipeCategory recipeCategory);
+        void CreateCategory(RecipeCategory recipeCategory);
         Task<RecipeCategory> GetCategoryById(int id, bool trackChanges);
         Task<IEnumerable<RecipeCategory>> GetAllRecipeCategories(bool trackChanges);
+        void DeleteCategory(int id);
     }
 }

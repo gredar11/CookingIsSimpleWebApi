@@ -13,6 +13,7 @@ namespace Service.Contracts
     {
         Task<RecipeCategoryDto> GetRecipeCategoryById(int id, bool trackChanges);
         Task<IEnumerable<RecipeCategoryDto>> GetAllRecipeCategories(bool trackChanges);
-        Task<RecipeCategoryDto> CreateRecipeCategory(RecipeCategoryCreationDto creationDto, bool trackChanges);
+        Task<RecipeCategoryDto> CreateRecipeCategory(RecipeCategoryCreationDto creationDto);
+        Task DeleteRecipeCategory(int id);
     }
 }

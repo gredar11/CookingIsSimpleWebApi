@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Cis.Domain.Exceptions
 {
-    public class IngredientNotFoundException:NotFoundException
+    public class EntityNotFoundException<T> : NotFoundException
     {
-        public IngredientNotFoundException(int id):base($"Ingredient with id = {id} not found in database")
+        public EntityNotFoundException(int id) : base($"Object with type {typeof(T).Name} and id {id} is not in database")
         {
-
         }
     }
 }

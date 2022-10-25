@@ -2,6 +2,7 @@ using Cis.Domain.Models;
 using Cis.Persistance;
 using Cis.WebApi.ActionFilters;
 using Cis.WebApi.Extensions;
+using Contracts;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<ValidationFilterArrtibute>();
 
 var app = builder.Build();
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 
 using (var scope = app.Services.CreateScope())
 {
