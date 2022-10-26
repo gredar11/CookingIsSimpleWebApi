@@ -11,6 +11,6 @@ namespace Cis.Domain.Models
         public int Id { get; set; }
         public string NameOfCategory { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Ingredient>? Ingredients { get; set; } = new List<Ingredient>();
+        public IEnumerable<Ingredient>? Ingredients { get; set; }
     }
 }

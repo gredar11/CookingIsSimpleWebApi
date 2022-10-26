@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared
+namespace Shared.UpdatingDto
 {
     public record FoodCategoryForUpdateDto
     {
@@ -15,6 +15,6 @@ namespace Shared
         public string NameOfCategory { get; init; }
         [Required]
         public string Description { get; init; }
-        
+
     }
 }

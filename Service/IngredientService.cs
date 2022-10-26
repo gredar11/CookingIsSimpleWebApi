@@ -6,6 +6,7 @@ using Service.Contracts;
 using Shared;
 using Shared.GetResponseDto;
 using Shared.RequestFeatures;
+using Shared.UpdatingDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;

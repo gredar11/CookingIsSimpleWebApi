@@ -10,6 +10,6 @@ namespace Shared.CreationDto
     {
         public string NameOfCategory { get; init; }
         public string Description { get; init; }
-        //public IEnumerable<IngredientForCreationDto>? Ingredients { get; init; }
+        public IEnumerable<IngredientForCreationDto>? Ingredients { get; init; }
     }
 }

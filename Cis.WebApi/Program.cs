@@ -21,7 +21,8 @@ builder.Services.AddScoped<ValidationFilterArrtibute>();
 
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
-app.ConfigureExceptionHandler(logger);
+
+app.UseCustomExceptionHandler(logger);
 
 using (var scope = app.Services.CreateScope())
 {

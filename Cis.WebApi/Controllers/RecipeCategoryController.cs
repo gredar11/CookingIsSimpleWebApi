@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.CreationDto;
+using Cis.WebApi.ActionFilters;
 
 namespace Cis.WebApi.Controllers
 {
@@ -32,6 +33,7 @@ namespace Cis.WebApi.Controllers
             return Ok(entity);
         }
         [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> CreateRecipeCategory([FromBody]RecipeCategoryCreationDto categoryCreationDto)
         {
             var createdDto = await serviceManager.RecipeCategoryService.CreateRecipeCategory(categoryCreationDto);
