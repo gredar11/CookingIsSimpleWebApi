@@ -1,6 +1,7 @@
 ﻿using Cis.Domain.Models;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,14 @@ namespace Cis.Persistance.Repositories
             Delete(foodCategory);
         }
 
-        public async Task<IEnumerable<FoodCategory>> GetFoodCategories(bool trackChanges)
+        public async Task<PagedList<FoodCategory>> GetFoodCategories(RequestParameters requestParameters, bool trackChanges)
         {
-            return await FindAll(trackChanges).OrderBy(c => c.NameOfCategory).ToListAsync();
+            var res = await FindAll(trackChanges)
+                        .Skip((requestParameters.PageNumber - 1) * requestParameters.PageSize)
+                        .Take(requestParameters.PageSize)
+                        .OrderBy(c => c.NameOfCategory)
+                        .ToListAsync();
+            return new PagedList<FoodCategory>(res, RepositoryContext.FoodCategories.Count(), requestParameters.PageNumber, requestParameters.PageSize);
         }
 
         public async Task<FoodCategory> GetFoodCategoryById(int id, bool trackChanges)

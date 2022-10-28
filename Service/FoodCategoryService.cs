@@ -5,6 +5,7 @@ using Contracts;
 using Service.Contracts;
 using Shared.CreationDto;
 using Shared.GetResponseDto;
+using Shared.RequestFeatures;
 using Shared.UpdatingDto;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,11 @@ namespace Service
             await _repository.SaveAsync();
         }
 
-        public async Task<IEnumerable<FoodCategoryDto>> GetFoodCategories(bool trackChanges)
+        public async Task<(IEnumerable<FoodCategoryDto> dtos, PageMetaData metaData)> GetFoodCategories(RequestParameters requestParameters, bool trackChanges)
         {
-            var foodCategories = await _repository.FoodCategoryRepository.GetFoodCategories(trackChanges);
-            var dtos = _mapper.Map<IEnumerable<FoodCategoryDto>>(foodCategories);
-            return dtos;
+            var foodCategories = await _repository.FoodCategoryRepository.GetFoodCategories(requestParameters, trackChanges);
+            var res = _mapper.Map<IEnumerable<FoodCategoryDto>>(foodCategories);
+            return (dtos: res, metadata: foodCategories.MetaData);
         }
 
         public async Task<FoodCategoryDto> GetFoodCategoryById(int id, bool trackChanges)
@@ -53,6 +54,21 @@ namespace Service
 
             var result = _mapper.Map<FoodCategoryDto>(entity);
             return result;
+        }
+
+        public async Task<(FoodCategoryForUpdateDto foodCategoryToPatch, FoodCategory foodCategoryEntity)> GetFoodCategoryForPatch(int id, bool trackChanges)
+        {
+            var foodCategoryEntity = await _repository.FoodCategoryRepository.GetFoodCategoryById(id, trackChanges);
+            if (foodCategoryEntity == null)
+                throw new EntityNotFoundException<FoodCategory>(id);
+            var foodcategoryToPatch = _mapper.Map<FoodCategoryForUpdateDto>(foodCategoryEntity);
+            return (foodcategoryToPatch, foodCategoryEntity);
+        }
+
+        public async Task SaveChangesForPatch(FoodCategoryForUpdateDto foodCategoryToPatch, FoodCategory foodCategoryEntity)
+        {
+            _mapper.Map(foodCategoryToPatch, foodCategoryEntity);
+            await _repository.SaveAsync();
         }
 
         public async Task UpdateFoodCategory(int id, FoodCategoryForUpdateDto updateDto, bool trackChanges)

@@ -4,6 +4,7 @@ using Cis.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cis.WebApi.Migrations
 {
     [DbContext(typeof(CisDbContext))]
-    partial class CisDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221027075210_AttrForSomePropInDomain1")]
+    partial class AttrForSomePropInDomain1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,8 +40,6 @@ namespace Cis.WebApi.Migrations
                     b.HasIndex("IngredientId");
 
                     b.ToTable("AmountOfIngredients");
-
-                    b.HasCheckConstraint("Amount", "Amount >= 0.0 and Amount <= 10000.0");
                 });
 
             modelBuilder.Entity("Cis.Domain.Models.FoodCategory", b =>

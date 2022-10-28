@@ -1,4 +1,5 @@
 ﻿using Cis.Domain.Models;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Contracts
 {
     public interface IFoodCategoryRepository
     {
-        Task<IEnumerable<FoodCategory>> GetFoodCategories(bool trackChanges);
+        Task<PagedList<FoodCategory>> GetFoodCategories(RequestParameters requestParameters, bool trackChanges);
         Task<FoodCategory> GetFoodCategoryById(int id, bool trackChanges);
         Task CreateFoodCategory(FoodCategory foodCategory);
         void UpdateFoodCategory(FoodCategory foodCategory);

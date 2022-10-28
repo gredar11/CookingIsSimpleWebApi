@@ -1,21 +1,17 @@
-﻿using Cis.Domain.Models;
-using Cis.Persistance.Repositories;
-using Cis.WebApi.ActionFilters;
+﻿using Cis.WebApi.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.CreationDto;
+using Shared.RequestFeatures;
 using Shared.UpdatingDto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Cis.WebApi.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
-    public class FoodCategoryController: Controller
+    public class FoodCategoryController : Controller
     {
         private readonly IServiceManager serviceManager;
         public FoodCategoryController(IServiceManager service)
@@ -28,13 +24,14 @@ namespace Cis.WebApi.Controllers
         public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)
         {
             var res = await serviceManager.FoodCategoryService.CreateFoodCategory(creationDto);
-            return CreatedAtRoute("GetFoodCategoryById", new {res.Id}, res);
+            return CreatedAtRoute("GetFoodCategoryById", new { res.Id }, res);
         }
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] FoodCategoryParameters requestParameters)
         {
-            var allFoodCategories = await serviceManager.FoodCategoryService.GetFoodCategories(trackChanges:false);
-            return Ok(allFoodCategories);
+            var allFoodCategories = await serviceManager.FoodCategoryService.GetFoodCategories(requestParameters, trackChanges: false);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(allFoodCategories.metaData));
+            return Ok(allFoodCategories.dtos);
         }
 
         [HttpGet("{id}", Name = "GetFoodCategoryById")]
@@ -54,6 +51,16 @@ namespace Cis.WebApi.Controllers
         public async Task<IActionResult> DeleteFoodCategory(int id)
         {
             await serviceManager.FoodCategoryService.DeleteFoodCategory(id, trackChanges: true);
+            return NoContent();
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PartiallyUpdateFoodCategory(int id, [FromBody] JsonPatchDocument<FoodCategoryForUpdateDto> patchDocument)
+        {
+            if (patchDocument is null)
+                return BadRequest("patch document sent from client is null");
+            var res = await serviceManager.FoodCategoryService.GetFoodCategoryForPatch(id, trackChanges: true);
+            patchDocument.ApplyTo(res.foodCategoryToPatch);
+            await serviceManager.FoodCategoryService.SaveChangesForPatch(res.foodCategoryToPatch, res.foodCategoryEntity);
             return NoContent();
         }
     }

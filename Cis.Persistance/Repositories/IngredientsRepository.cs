@@ -30,7 +30,7 @@ namespace Cis.Persistance.Repositories
 
         public async Task<IEnumerable<Ingredient>> GetCollectionByIds(int categoryId, IEnumerable<int> ids, bool trackChanges)
         {
-            return await FindByCondition(x => ids.Contains(x.Id) && x.CategoryId == categoryId , trackChanges).Include(x => x.Category).ToListAsync();
+            return await FindByCondition(x => ids.Contains(x.Id) && x.CategoryId == categoryId, trackChanges).Include(x => x.Category).ToListAsync();
         }
 
         public async Task<Ingredient> GetIngredientById(int categoryId, int id, bool trackChanges)
@@ -41,10 +41,13 @@ namespace Cis.Persistance.Repositories
         public async Task<PagedList<Ingredient>> GetIngredients(int categoryId, IngredientParameters ingredientParameters, bool trackChanges)
         {
             var ingredients = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges)
-                .OrderBy(ingr => ingr.IngredientName).Skip((ingredientParameters.PageNumber - 1) * ingredientParameters.PageSize)
-                              .Take(ingredientParameters.PageSize).Include(x => x.Category).ToListAsync();
+                                    .Skip((ingredientParameters.PageNumber - 1) * ingredientParameters.PageSize)
+                                    .Take(ingredientParameters.PageSize)
+                                    .OrderBy(ingr => ingr.IngredientName)
+                                    .Include(x => x.Category)
+                                    .ToListAsync();
             var count = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges).CountAsync();
-            return new PagedList<Ingredient>(ingredients,count, ingredientParameters.PageNumber, ingredientParameters.PageSize);
+            return new PagedList<Ingredient>(ingredients, count, ingredientParameters.PageNumber, ingredientParameters.PageSize);
         }
 
         public async Task<IEnumerable<AmountOfIngredient>> GetIngredientsOfReceip(int receipId, bool trackChanges)
@@ -52,5 +55,9 @@ namespace Cis.Persistance.Repositories
             return await RepositoryContext.Set<AmountOfIngredient>().Where(x => x.RecipeId == receipId).ToListAsync();
         }
 
+        public void UpdateIngredient(Ingredient ingredient)
+        {
+            Update(ingredient);
+        }
     }
 }

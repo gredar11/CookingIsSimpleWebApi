@@ -16,6 +16,8 @@ namespace Cis.Persistance.EntityConfigurations
             builder.HasKey(x => new { x.RecipeId, x.IngredientId });
             builder.HasOne(x => x.Recipe).WithMany(x => x.Ingredients).HasForeignKey(x => x.RecipeId);
             builder.HasOne(x => x.Ingredient).WithMany(x => x.Recipes).HasForeignKey(x => x.IngredientId);
+            builder.HasCheckConstraint("Amount", "Amount >= 0.0 and Amount <= 10000.0");
+
         }
     }
 }

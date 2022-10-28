@@ -10,6 +10,6 @@ namespace Cis.Domain.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<Recipe> Recipes { get; set; }
+        public IEnumerable<Recipe>? Recipes { get; set; }
     }
 }

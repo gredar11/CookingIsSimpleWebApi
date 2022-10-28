@@ -1,5 +1,6 @@
 ﻿using Cis.WebApi.ActionFilters;
 using Cis.WebApi.ModelBinders;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared;
@@ -62,6 +63,16 @@ namespace Cis.WebApi.Controllers
         public async Task<IActionResult> UpdateIngredient(int foodCategoryId, int id, [FromBody] IngredientForUpdateDto updateDto)
         {
             await _serviceManager.IngredientService.UpdateIngredientForCategory(foodCategoryId, id, updateDto, trackChanges: false);
+            return NoContent();
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PartiallyUpdateIngredient(int foodCategoryId, int id, [FromBody] JsonPatchDocument<IngredientForUpdateDto> document)
+        {
+            if (document is null)
+                return BadRequest("patch document is empty");
+            var res = await _serviceManager.IngredientService.PartiallyUpdateIngredient(foodCategoryId, id, trackChanges: true);
+            document.ApplyTo(res.updateDto);
+            await _serviceManager.IngredientService.SavePatchChanges(res.updateDto, res.entity);
             return NoContent();
         }
         [HttpDelete("{id}")]
