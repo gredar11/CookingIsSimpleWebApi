@@ -31,13 +31,13 @@ namespace Cis.WebApi.Controllers
             return Ok(res);
         }
         [HttpPut("{recipeId}/ingredient/{ingredientId}")]
-        public async Task<IActionResult> AddIngredientToRecipe(int categoryId, int recipeId, int ingredientId, [FromBody] RecipeIngredientAddingDto addingDto)
+        public async Task<IActionResult> AddIngredientToRecipe(int recipeId, int ingredientId, [FromBody] RecipeIngredientAddingDto addingDto)
         {
             var res = await _serviceManager.RecipeService.AddIngredientToRecipe(recipeId, ingredientId, addingDto, trackChanges: false);
             return Ok(res);
         }
         [HttpGet("{recipeId}/ingredient/")]
-        public async Task<IActionResult> GetIngredientsOfRecipe(int categoryId, int recipeId)
+        public async Task<IActionResult> GetIngredientsOfRecipe(int recipeId)
         {
             var res = await _serviceManager.RecipeService.GetIngredientsFromRecipe(recipeId, trackChanges: false);
             return Ok(res);

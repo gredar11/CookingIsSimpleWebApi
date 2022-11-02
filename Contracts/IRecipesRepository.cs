@@ -13,6 +13,8 @@ namespace Contracts
         Task<Recipe> GetRecipeById(int categoryId, int id, bool trackChanges);
         void CreateReceip(int categoryId, Recipe recipe);
         void AddIngredient(int recipeId, int ingredientId, AmountOfIngredient ingredient);
+        void AddIngredient(int recipeId, AmountOfIngredient ingredient);
         Task<IEnumerable<AmountOfIngredient>> GetIngredientsFromRecipe(int recipeId, bool trackChanges);
+        Task<AmountOfIngredient> GetIngredientForRecipe(int recipeId, int ingredientId);
     }
 }

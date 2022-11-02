@@ -41,9 +41,9 @@ namespace Cis.Persistance.Repositories
         public async Task<PagedList<Ingredient>> GetIngredients(int categoryId, IngredientParameters ingredientParameters, bool trackChanges)
         {
             var ingredients = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges)
+                                    .OrderBy(ingr => ingr.IngredientName)
                                     .Skip((ingredientParameters.PageNumber - 1) * ingredientParameters.PageSize)
                                     .Take(ingredientParameters.PageSize)
-                                    .OrderBy(ingr => ingr.IngredientName)
                                     .Include(x => x.Category)
                                     .ToListAsync();
             var count = await FindByCondition(ingr => ingr.CategoryId.Equals(categoryId), trackChanges).CountAsync();

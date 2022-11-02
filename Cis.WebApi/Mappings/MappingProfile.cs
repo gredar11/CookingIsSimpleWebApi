@@ -26,6 +26,7 @@ namespace Cis.WebApi.Mappings
             CreateMap<FoodCategoryForCreationDto, FoodCategory>();
             CreateMap<FoodCategoryForUpdateDto, FoodCategory>().ReverseMap();
             CreateMap<IngredientForCreationDto, Ingredient>();
+            CreateMap<RecipeCategoryUpdateDto, RecipeCategory>();
             CreateMap<IngredientForUpdateDto, Ingredient>().ReverseMap();
             var ingredientMap = CreateMap<Ingredient, IngredientDto>();
             ingredientMap.ForMember(dest => dest.FoodCategoryName, opt => opt.MapFrom(src => src.Category.NameOfCategory));

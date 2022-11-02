@@ -2,6 +2,7 @@
 using Cis.Domain.Models;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,12 @@ namespace Cis.Persistance.Repositories
         public async Task<RecipeCategory> GetCategoryById(int id, bool trackChanges)
         {
             return await FindByCondition(x => x.Id == id, trackChanges).SingleOrDefaultAsync();
+        }
+
+        public async Task<PagedList<RecipeCategory>> GetRecipeCategories(RequestParameters requestParameters, bool trackChanges)
+        {
+            var res = await RepositoryContext.RecipeCategories.Skip(requestParameters.PageSize * (requestParameters.PageNumber -1)).Take(requestParameters.PageSize).ToListAsync();
+            return new PagedList<RecipeCategory>(res, RepositoryContext.RecipeCategories.Count(), requestParameters.PageNumber, requestParameters.PageSize);
         }
 
     }

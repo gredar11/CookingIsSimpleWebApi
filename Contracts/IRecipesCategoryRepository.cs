@@ -1,4 +1,5 @@
 ﻿using Cis.Domain.Models;
+using Shared.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Contracts
 {
     public interface IRecipesCategoryRepository
     {
+        Task<PagedList<RecipeCategory>> GetRecipeCategories(RequestParameters requestParameters, bool trackChanges);
+
         void CreateCategory(RecipeCategory recipeCategory);
         Task<RecipeCategory> GetCategoryById(int id, bool trackChanges);
         Task<IEnumerable<RecipeCategory>> GetAllRecipeCategories(bool trackChanges);

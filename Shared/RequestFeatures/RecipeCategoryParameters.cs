@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.UpdatingDto
+namespace Shared.RequestFeatures
 {
-    public class RecipeCategoryUpdateDto
+    public class RecipeCategoryParameters : RequestParameters
     {
-        public string Name { get; set; }
+
     }
 }
