@@ -5,11 +5,7 @@ using Contracts;
 using Service.Contracts;
 using Shared.CreationDto;
 using Shared.GetResponseDto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shared.UpdatingDto;
 
 namespace Service
 {
@@ -23,7 +19,7 @@ namespace Service
             _mapper = mapper;
         }
 
-        public async Task<AmountOfIngredientDto> AddIngredientToRecipe(int recipeId, int ingredientId, RecipeIngredientAddingDto addingDto, bool trackChanges)
+        public async Task<AmountOfIngredientDto> AddIngredientToRecipe(int recipeCategoryId,int recipeId, int ingredientId, RecipeIngredientAddingDto addingDto, bool trackChanges)
         {
             var entity = _mapper.Map<AmountOfIngredient>(addingDto);
             _repository.RecipesRepository.AddIngredient(recipeId, ingredientId, entity);
@@ -55,7 +51,7 @@ namespace Service
             return _mapper.Map<IEnumerable<RecipeDto>>(entitiesOfCategory);
         }
 
-        public async Task<IEnumerable<AmountOfIngredientDto>> GetIngredientsFromRecipe(int recipeId, bool trackChanges)
+        public async Task<IEnumerable<AmountOfIngredientDto>> GetIngredientsFromRecipe(int recipeCategoryId, int recipeId, bool trackChanges)
         {
             var entities = await _repository.RecipesRepository.GetIngredientsFromRecipe(recipeId, trackChanges);
             return _mapper.Map<IEnumerable<AmountOfIngredientDto>>(entities);
@@ -68,7 +64,7 @@ namespace Service
             return _mapper.Map<RecipeDto>(entity);
         }
 
-        public async Task<(IEnumerable<AmountOfIngredientDto> dtos, string ids)> AddMultipleIngredientsToRecipe(int recipeCategoryId, int recipeId, IEnumerable<AmountOfIngredientDto> ingredientDtos)
+        public async Task<(IEnumerable<AmountOfIngredientDto> dtos, string ids)> AddMultipleIngredientsToRecipe(int recipeCategoryId, int recipeId, IEnumerable<AmountOfIngredientToAddIntoRecipeDto> ingredientDtos)
         {
             if (ingredientDtos == null)
                 throw new IngredientCollectionBadRequest();
@@ -78,8 +74,12 @@ namespace Service
             var amntOfIngredientsEntities = _mapper.Map<IEnumerable<AmountOfIngredient>>(ingredientDtos);
             foreach (var ingredient in amntOfIngredientsEntities)
             {
-                _repository.RecipesRepository.AddIngredient(recipeId, ingredient.IngredientId, )
+                _repository.RecipesRepository.AddIngredient(recipeId, ingredient);
             }
+            await _repository.SaveAsync();
+            var res = _mapper.Map<IEnumerable<AmountOfIngredientDto>>(amntOfIngredientsEntities);
+            var idsString = string.Join(",",amntOfIngredientsEntities.Select(x => x.RecipeId.ToString() + x.IngredientId.ToString()));
+            return (res, idsString);
         }
     }
 }

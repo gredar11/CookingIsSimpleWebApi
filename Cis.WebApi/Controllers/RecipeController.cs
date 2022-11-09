@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Shared.CreationDto;
+using Shared.UpdatingDto;
 
 namespace Cis.WebApi.Controllers
 {
     [ApiController]
     [Route("/recipecategory/{categoryId}/recipe")]
-    public class RecipeController:Controller
+    public class RecipeController : Controller
     {
         private readonly IServiceManager _serviceManager;
         public RecipeController(IServiceManager serviceManager)
@@ -19,7 +15,7 @@ namespace Cis.WebApi.Controllers
             _serviceManager = serviceManager;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateRecipe(int categoryId, [FromBody]RecipeCreationDto creationDto)
+        public async Task<IActionResult> CreateRecipe(int categoryId, [FromBody] RecipeCreationDto creationDto)
         {
             var res = await _serviceManager.RecipeService.CreateRecipe(categoryId, creationDto);
             return Ok(res);
@@ -31,16 +27,22 @@ namespace Cis.WebApi.Controllers
             return Ok(res);
         }
         [HttpPut("{recipeId}/ingredient/{ingredientId}")]
-        public async Task<IActionResult> AddIngredientToRecipe(int recipeId, int ingredientId, [FromBody] RecipeIngredientAddingDto addingDto)
+        public async Task<IActionResult> AddIngredientToRecipe(int categoryId, int recipeId, int ingredientId, [FromBody] RecipeIngredientAddingDto addingDto)
         {
-            var res = await _serviceManager.RecipeService.AddIngredientToRecipe(recipeId, ingredientId, addingDto, trackChanges: false);
+            var res = await _serviceManager.RecipeService.AddIngredientToRecipe(categoryId, recipeId, ingredientId, addingDto, trackChanges: false);
             return Ok(res);
         }
         [HttpGet("{recipeId}/ingredient/")]
-        public async Task<IActionResult> GetIngredientsOfRecipe(int recipeId)
+        public async Task<IActionResult> GetIngredientsOfRecipe(int categoryId, int recipeId)
         {
-            var res = await _serviceManager.RecipeService.GetIngredientsFromRecipe(recipeId, trackChanges: false);
+            var res = await _serviceManager.RecipeService.GetIngredientsFromRecipe(categoryId, recipeId, trackChanges: false);
             return Ok(res);
+        }
+        [HttpPut("{recipeId}/ingredient/")]
+        public async Task<IActionResult> AddMultipleIngredientsToRecipe(int categoryId, int recipeId, [FromBody] IEnumerable<AmountOfIngredientToAddIntoRecipeDto> amountOfIngredients)
+        {
+            var res = await _serviceManager.RecipeService.AddMultipleIngredientsToRecipe(categoryId, recipeId, amountOfIngredients);
+            return Ok(res.dtos);
         }
     }
 }
