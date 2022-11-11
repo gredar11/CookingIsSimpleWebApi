@@ -5,6 +5,7 @@ using Cis.WebApi.Extensions;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NLog;
 
@@ -44,6 +45,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = serviceProvider.GetRequiredService<CisDbContext>();
+        context.Database.Migrate();
         //context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
     }
