@@ -16,7 +16,7 @@ namespace Cis.Persistance
         public static void AddPersistance(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["DbConnection"];
-            services.AddDbContext<CisDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Cis.WebApi")));
+            services.AddDbContext<CisDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("WebApi")));
         }
     }
 }
