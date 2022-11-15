@@ -8,7 +8,7 @@ Web API for creating and managing recipes.
  - RESTful
  - CRUD operations for all entities
  - Used ORM - EntityFramework 
-
+ - Uses SwaggerUI
 
 Class diagram. Diagram showing relationships between entities. Implemented one-to-many and many-to-many relationships.
 
