@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Domain.Models.AmountOfIngredient">
+    <Position X="5.75" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABABgAAAAAAAAAAAAAACAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Models\AmountOfIngredient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Ingredient" />
+      <Property Name="Recipe" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Domain.Models.FoodCategory">
+    <Position X="2.5" Y="1.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAABAAAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FoodCategory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Ingredients" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Domain.Models.Ingredient">
+    <Position X="4" Y="4.25" Width="2.5" />
+    <AssociationLine Name="Category" Type="Domain.Models.FoodCategory">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.912" Y="0.159" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Recipes" Type="Domain.Models.AmountOfIngredient" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.5" Y="5.25" />
+        <Point X="7.25" Y="5.25" />
+        <Point X="7.25" Y="2.759" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.977" Y="0.749" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAACIAAABAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Models\Ingredient.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Category" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Recipes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Domain.Models.Recipe">
+    <Position X="11.25" Y="1.25" Width="2" />
+    <AssociationLine Name="RecipeCategory" Type="Domain.Models.RecipeCategory" FixedFromPoint="true">
+      <Path>
+        <Point X="11.5" Y="2.955" />
+        <Point X="11.5" Y="4.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Ingredients" Type="Domain.Models.AmountOfIngredient">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.013" Y="-0.297" Height="0.187" Width="3.19" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAACAAAAAAAgAAAAAAAAACQAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Recipe.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RecipeCategory" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Ingredients" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Domain.Models.RecipeCategory">
+    <Position X="11.25" Y="4.75" Width="2" />
+    <AssociationLine Name="Recipes" Type="Domain.Models.Recipe" FixedToPoint="true">
+      <Path>
+        <Point X="13" Y="4.75" />
+        <Point X="13" Y="2.955" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-2.203" Y="0.184" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAIAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\RecipeCategory.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Recipes" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Calibri" Size="10" />
+</ClassDiagram>
