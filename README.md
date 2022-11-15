@@ -3,10 +3,11 @@
 Web API for creating and managing recipes. 
 
  ## Features
- - [x] Onion-layered architecture
- - [x] RESTful
- - [x] CRUD operations for all entities
- - [x] 
+ - Based on .NET 6
+ - Onion-layered architecture
+ - RESTful
+ - CRUD operations for all entities
+ - Used ORM - EntityFramework 
 
 
 Class diagram. Diagram showing relationships between entities. Implemented one-to-many and many-to-many relationships.
