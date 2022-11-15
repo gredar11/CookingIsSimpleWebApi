@@ -6,8 +6,9 @@ Web API for creating and managing recipes.
  - Based on .NET 6
  - Onion-layered architecture
  - RESTful
- - Used ORM - EntityFramework 
- - Uses SwaggerUI
+ - Used ORM - EntityFramework
+ - Database - MS SQL Servel
+ - Has SwaggerUI
  
 ---
 Diagram showing relationships between entities. Implemented one-to-many and many-to-many relationships.
