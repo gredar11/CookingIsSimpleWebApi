@@ -1,4 +1,4 @@
-﻿using Cis.Domain.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance.EntityConfigurations
+namespace Persistance.EntityConfigurations
 {
     public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Cis.Domain.ErrorModel
+namespace Domain.ErrorModel
 {
     public class ErrorDetails
     {

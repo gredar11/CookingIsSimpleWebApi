@@ -1,8 +1,8 @@
-﻿using Cis.Domain.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cis.Persistance.EntityConfigurations
+namespace Persistance.EntityConfigurations
 {
     public class IngredientConfiguration: IEntityTypeConfiguration<Ingredient>
     {

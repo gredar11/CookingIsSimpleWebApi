@@ -1,4 +1,4 @@
-﻿using Cis.Domain.Models;
+﻿using Domain.Models;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using Shared.RequestFeatures;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance.Repositories
+namespace Persistance.Repositories
 {
 
     public class IngredientsRepository : RepositoryBase<Ingredient>, IIngreditentRepository

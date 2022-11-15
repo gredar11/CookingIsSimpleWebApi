@@ -1,13 +1,14 @@
-using Cis.Domain.Models;
-using Cis.Persistance;
-using Cis.WebApi.ActionFilters;
-using Cis.WebApi.Extensions;
+using Domain.Models;
+using Persistance;
+using WebApi.ActionFilters;
+using WebApi.Extensions;
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NLog;
+using Persistance;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services.AddControllers(config =>
     .AddXmlDataContractSerializerFormatters();
 
 builder.Services.AddScoped<ValidationFilterArrtibute>();
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerManager>();
@@ -55,12 +57,16 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseHttpsRedirection();
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Cooking is simple Web API");
+});
 app.UseEndpoints(endpoints => endpoints.MapControllers());
-//app.MapGet("/", () => "Hello World!");
 
 app.Run();
-
 
 NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
     new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()

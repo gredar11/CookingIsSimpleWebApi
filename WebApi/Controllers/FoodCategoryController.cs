@@ -1,4 +1,4 @@
-﻿using Cis.WebApi.ActionFilters;
+﻿using WebApi.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -7,10 +7,11 @@ using Shared.RequestFeatures;
 using Shared.UpdatingDto;
 using System.Text.Json;
 
-namespace Cis.WebApi.Controllers
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("/[controller]")]
+    [ApiExplorerSettings(GroupName = "v1")]
     public class FoodCategoryController : Controller
     {
         private readonly IServiceManager serviceManager;
@@ -18,7 +19,11 @@ namespace Cis.WebApi.Controllers
         {
             this.serviceManager = service;
         }
-
+        /// <summary>
+        /// Add food category to the corresponding table
+        /// </summary>
+        /// <param name="creationDto"></param>
+        /// <returns></returns>
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> CreateFoodCategory([FromBody] FoodCategoryForCreationDto creationDto)

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Cis.Domain.Models;
+using Domain.Models;
 using Shared;
 using Shared.CreationDto;
 using Shared.GetResponseDto;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.WebApi.Mappings
+namespace WebApi.Mappings
 {
     public class MappingProfile:Profile
     {

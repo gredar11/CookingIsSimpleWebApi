@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance.Validators
+namespace Persistance.Validators
 {
     public class IngredientAmountValidator
     {

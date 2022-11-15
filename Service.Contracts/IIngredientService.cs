@@ -1,4 +1,4 @@
-﻿using Cis.Domain.Models;
+﻿using Domain.Models;
 using Shared;
 using Shared.GetResponseDto;
 using Shared.RequestFeatures;

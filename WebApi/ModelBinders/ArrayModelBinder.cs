@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Cis.WebApi.ModelBinders
+namespace WebApi.ModelBinders
 {
     public class ArrayModelBinder : IModelBinder
     {

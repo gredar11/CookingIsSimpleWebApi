@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.WebApi.ActionFilters
+namespace WebApi.ActionFilters
 {
     public class ValidationFilterArrtibute: IActionFilter
     {

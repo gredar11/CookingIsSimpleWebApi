@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Cis.WebApi.Migrations
+namespace WebApi.Migrations
 {
     public partial class Foodcategoriestableaddition : Migration
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Cis.Domain.Exceptions;
-using Cis.Domain.Models;
+using Domain.Exceptions;
+using Domain.Models;
 using Contracts;
 using Service.Contracts;
 using Shared.CreationDto;

@@ -1,5 +1,5 @@
-﻿using Cis.Domain.Models;
-using Cis.Persistance.EntityConfigurations;
+﻿using Domain.Models;
+using Persistance.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance
+namespace Persistance
 {
     public class CisDbContext:DbContext
     {

@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.CreationDto;
-using Cis.WebApi.ActionFilters;
+using WebApi.ActionFilters;
 using Shared.RequestFeatures;
 using Shared.UpdatingDto;
 using System.Text.Json;
 
-namespace Cis.WebApi.Controllers
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("recipecategory")]

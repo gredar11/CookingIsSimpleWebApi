@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Domain.Models
+namespace Domain.Models
 {
     public class Ingredient
     {

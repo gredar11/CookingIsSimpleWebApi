@@ -1,5 +1,5 @@
-﻿using Cis.Domain.Exceptions;
-using Cis.Domain.Models;
+﻿using Domain.Exceptions;
+using Domain.Models;
 using Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance.Repositories
+namespace Persistance.Repositories
 {
     public class RecipeRepository :RepositoryBase<Recipe>, IRecipesRepository
     {

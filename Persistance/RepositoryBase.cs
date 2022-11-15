@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance
+namespace Persistance
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {

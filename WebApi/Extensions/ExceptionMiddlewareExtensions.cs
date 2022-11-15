@@ -1,5 +1,5 @@
-﻿using Cis.Domain.ErrorModel;
-using Cis.Domain.Exceptions;
+﻿using Domain.ErrorModel;
+using Domain.Exceptions;
 using Contracts;
 using Microsoft.AspNetCore.Diagnostics;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.WebApi.Extensions
+namespace WebApi.Extensions
 {
     public static class ExceptionMiddlewareExtensions
     {

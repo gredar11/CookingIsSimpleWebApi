@@ -1,5 +1,5 @@
-﻿using Cis.WebApi.ActionFilters;
-using Cis.WebApi.ModelBinders;
+﻿using WebApi.ActionFilters;
+using WebApi.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Cis.WebApi.Controllers
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("/foodcategory/{foodCategoryId}/[controller]")]

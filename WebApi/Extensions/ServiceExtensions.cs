@@ -1,10 +1,10 @@
-﻿using Cis.Persistance;
-using Contracts;
+﻿using Contracts;
 using LoggerService;
+using Persistance;
 using Service;
 using Service.Contracts;
 
-namespace Cis.WebApi.Extensions
+namespace WebApi.Extensions
 {
     public static class ServiceExtensions
     {

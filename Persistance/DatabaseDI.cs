@@ -1,4 +1,4 @@
-﻿using Cis.Persistance.Repositories;
+﻿using Persistance.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance
+namespace Persistance
 {
     // database dependency injection
     public static class DatabaseDI

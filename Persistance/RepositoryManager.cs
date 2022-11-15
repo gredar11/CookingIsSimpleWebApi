@@ -1,5 +1,6 @@
-﻿using Cis.Domain.Models;
-using Cis.Persistance.Repositories;
+﻿using Domain.Models;
+using Persistance;
+using Persistance.Repositories;
 using Contracts;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cis.Persistance
+namespace Persistance
 {
-    public class RepositoryManager: IRepositoryManager
+    public class RepositoryManager : IRepositoryManager
     {
         private readonly CisDbContext _repositoryConext;
         private readonly Lazy<IFoodCategoryRepository> _foodCategoryRepository;

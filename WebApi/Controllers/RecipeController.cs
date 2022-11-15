@@ -3,7 +3,7 @@ using Service.Contracts;
 using Shared.CreationDto;
 using Shared.UpdatingDto;
 
-namespace Cis.WebApi.Controllers
+namespace WebApi.Controllers
 {
     [ApiController]
     [Route("/recipecategory/{categoryId}/recipe")]
