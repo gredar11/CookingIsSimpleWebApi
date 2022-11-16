@@ -32,6 +32,8 @@ namespace Persistance.Repositories
         {
             recipe.RecipeCategoryId = categoryId;
             Create(recipe);
+            RepositoryContext.Entry(recipe).Reference(x => x.RecipeCategory).Load();
+            RepositoryContext.Entry(recipe).Collection(x => x.Ingredients).Load();
         }
         // добавить проверку на поиск категории в таблице с категориями
         public async Task<IEnumerable<Recipe>> GetAllReceipsOfCategory(int categoryId, bool trackChanges)
@@ -54,9 +56,9 @@ namespace Persistance.Repositories
 
         public async Task<Recipe> GetRecipeById(int categoryId, int id, bool trackChanges)
         {
-            var category = await RepositoryContext.RecipeCategories.SingleOrDefaultAsync(x => x.Id == id);
-            if (category == null) throw new EntityNotFoundException<RecipeCategory>(categoryId);
-            return await FindByCondition(x => x.RecipeCategoryId == categoryId && x.Id == id, trackChanges).Include(x =>x.RecipeCategory).SingleOrDefaultAsync();
+            var recipe = await FindByCondition(x => x.RecipeCategoryId == categoryId && x.Id == id, trackChanges).Include(x =>x.RecipeCategory).SingleOrDefaultAsync();
+            await RepositoryContext.Entry(recipe).Collection(x => x.Ingredients).LoadAsync();
+            return recipe;
         }
     }
 }

@@ -62,7 +62,7 @@ namespace WebApi.Controllers
         [ServiceFilter(typeof(ValidationFilterArrtibute))]
         public async Task<IActionResult> UpdateIngredient(int foodCategoryId, int id, [FromBody] IngredientForUpdateDto updateDto)
         {
-            await _serviceManager.IngredientService.UpdateIngredientForCategory(foodCategoryId, id, updateDto, trackChanges: false);
+            await _serviceManager.IngredientService.UpdateIngredientForCategory(foodCategoryId, id, updateDto, trackChanges: true);
             return NoContent();
         }
         [HttpPatch("{id}")]

@@ -61,6 +61,8 @@ namespace Service
         {
             await CheckIfRecipeCategoryExists(categoryId);
             var entity = await _repository.RecipesRepository.GetRecipeById(categoryId, recipeId, trackChanges);
+            if (entity == null)
+                throw new EntityNotFoundException<Recipe>(recipeId);
             return _mapper.Map<RecipeDto>(entity);
         }
 
